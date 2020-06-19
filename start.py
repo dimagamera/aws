@@ -3,8 +3,8 @@ from config import *
 
 def centos():
     ec2 = boto3.resource('ec2', region_name="eu-north-1")
-    outfile = open('virtualkacentos.pem', 'w')
-    key_pair = ec2.create_key_pair(KeyName='virtualkacentos')
+    outfile = open('virtualkacentoss.pem', 'w')
+    key_pair = ec2.create_key_pair(KeyName='virtualkacentoss')
     KeyPairOut = str(key_pair.key_material)
     outfile.write(KeyPairOut)
 
@@ -36,36 +36,28 @@ def ubuntu():
 while True:
 
     q = int(input(
-        "1. Вивiд всiх бакетiв 2. Вивiд бакета 3. Завантажити 4. Скачати 5. Создать виртуалку 6. Вихiд = > "))
+        "1. Вивiд всiх бакетiв 2. Вивiд бакета 3. Завантажити 4. Скачати 5. Створити віртуалку  6. Видалити віртуалку 7. Список віртуалок 8. Вихiд = > "))
 
     if q == 1:
-        s3 = boto3.resource('s3')
-        for bucket in s3.buckets.all():
-            print(bucket.name)
+        show_all_bucket()
 
     elif q == 2:
-        view = input('Вивiд бакета = > ')
-        s3 = boto3.resource('s3')
-        bucket = s3.Bucket(view)
-        for text in bucket.objects.all():
-            print(text.key)
+        view_bucket()
 
     elif q == 3:
-        your_bucket = input("Бакет = >")
-        file_name = input("Iм'я файла > ")
-        s3 = boto3.client('s3')
-        s3.upload_file(file_name, your_bucket, file_name)
+        upload_bucket()
 
     elif q == 4:
-        your_bucket = input(" Бакет = >")
-        file_name = input("Iм'я файла > ")
-        s3 = boto3.client('s3')
-        s3.download_file(your_bucket, file_name, file_name)
+        dowload_bucket()
+
     elif q == 5:
-        choise = int(input("1. Centos 2. Ubuntu"))
-        if choise == 1:
-            centos()
-        elif choise == 2:
-            ubuntu()
+        create_instance()
+
     elif q == 6:
+        Delete()
+
+    elif q == 7:
+        show()
+
+    elif q == 8:
         break
